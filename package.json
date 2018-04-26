@@ -13,6 +13,18 @@
     "test": "jest",
     "prepack": "tsc"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "npm run format -- ",
+      "tsc --noEmit",
+      "git add"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/liquid-state/iwa-core.git"
@@ -32,7 +44,9 @@
     "@liquid-state/iwa-keyvalue": "^0.2",
     "@types/jest": "^22.1.2",
     "@types/lodash": "^4.14.103",
+    "husky": "^0.15.0-rc.13",
     "jest": "^22.3.0",
+    "lint-staged": "^7.0.5",
     "prettier": "^1.10.2",
     "ts-jest": "^22.0.4",
     "typescript": "^2.7.1"
