@@ -21,7 +21,6 @@
   "lint-staged": {
     "src/**/*.ts": [
       "npm run format -- ",
-      "tsc --noEmit",
       "git add"
     ]
   },
