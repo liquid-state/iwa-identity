@@ -1,26 +1,26 @@
 import { IIdentity } from './identity';
 
-export interface IIdentityProvider {
-  getIdentity(): Promise<IIdentity>;
-  update(identity: string, credentials: object, store?: boolean): Promise<IIdentity>;
+export interface IIdentityProvider<T> {
+  getIdentity(): Promise<IIdentity<T>>;
+  update(identity: string, credentials: object, store?: boolean): Promise<IIdentity<T>>;
   clear(): Promise<void>;
 }
 
 export interface IIdentityManager {
-  forService(serviceName: string): IIdentityProvider;
-  addProvider(serviceName: string, provider: IIdentityProvider): this;
-  refreshAll(): Promise<IIdentity[]>;
+  forService<T>(serviceName: string): IIdentityProvider<T>;
+  addProvider<T>(serviceName: string, provider: IIdentityProvider<T>): this;
+  refreshAll(): Promise<IIdentity<any>[]>;
   logout(): Promise<void>;
 }
 
 export default class IdentityManager implements IIdentityManager {
-  private providers = new Map<string, IIdentityProvider>();
+  private providers = new Map<string, IIdentityProvider<any>>();
 
   forService(serviceName: string) {
     return this.providers.get(serviceName)!;
   }
 
-  addProvider(serviceName: string, provider: IIdentityProvider) {
+  addProvider<T>(serviceName: string, provider: IIdentityProvider<T>) {
     this.providers.set(serviceName, provider);
     return this;
   }

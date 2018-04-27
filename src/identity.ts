@@ -1,12 +1,12 @@
-export interface IIdentity {
+export interface IIdentity<T> {
   name: string | null;
-  credentials: object | null;
+  credentials: T | null;
   identifiers: Map<string, string>;
   isAuthenticated: boolean;
 }
 
 /** Default identity implementation, this can be replaced by identity providers which need additional control */
-export default class Identity implements IIdentity {
+export default class Identity<T> implements IIdentity<T> {
   /**
    * The name by which this user should be identified. This could be their actual username
    * or some other user identifier, it should be consistent within a service but cannot be
@@ -17,7 +17,7 @@ export default class Identity implements IIdentity {
    * The set of credentials which can be used to interact with the service this identity is
    * associated with.
    */
-  public readonly credentials: object | null;
+  public readonly credentials: T | null;
   /**
    * A map of additional identifiers for this identity.
    */
@@ -27,7 +27,7 @@ export default class Identity implements IIdentity {
 
   constructor(
     name: string | null,
-    credentials: object | null,
+    credentials: T | null,
     identifiers = new Map<string, string>()
   ) {
     this.name = name;
