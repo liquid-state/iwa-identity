@@ -26,14 +26,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/liquid-state/iwa-core.git"
+    "url": "git+https://github.com/liquid-state/iwa-identity.git"
   },
   "author": "Liquid State <dev@liquid-state.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/liquid-state/iwa-core/issues"
+    "url": "https://github.com/liquid-state/iwa-identity/issues"
   },
-  "homepage": "https://github.com/liquid-state/iwa-core#readme",
+  "homepage": "https://github.com/liquid-state/iwa-identity#readme",
   "peerDependencies": {
     "@liquid-state/iwa-core": "^0.2",
     "@liquid-state/iwa-keyvalue": "^0.2"
