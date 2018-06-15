@@ -15,14 +15,14 @@ export default class JWTProvider implements IIdentityProvider<JWTCredentials> {
   constructor(
     private serviceName: string,
     private store: IIdentityStore,
-    private refreshCallback: () => Promise<ISerialisableIdentity>,
+    private refreshCallback?: () => Promise<ISerialisableIdentity>,
     private refreshWindow: Seconds = 3600
   ) {}
 
   async getIdentity() {
     // Try to get stored credentials, verifying that the cached identity has not changed.
-    const storedIdentity = await this.getStoredIdentity();
-    if (!this.identity.isAuthenticated || this.identity.name !== storedIdentity.name) {
+    if (!this.identity.isAuthenticated) {
+      const storedIdentity = await this.getStoredIdentity();
       this.identity = storedIdentity;
     }
     if (!this.identity.isAuthenticated) {
@@ -57,6 +57,10 @@ export default class JWTProvider implements IIdentityProvider<JWTCredentials> {
   }
 
   private async refreshIdentity() {
+    if (!this.refreshCallback) {
+      this.identity = new Identity(null, null);
+      return;
+    }
     const { identity, credentials } = await this.refreshCallback();
     this.identity = new Identity(identity, credentials as JWTCredentials);
   }
