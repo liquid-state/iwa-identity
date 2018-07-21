@@ -16,7 +16,7 @@ export default class JWTProvider implements IIdentityProvider<JWTCredentials> {
     private serviceName: string,
     private store: IIdentityStore,
     private refreshCallback?: () => Promise<ISerialisableIdentity>,
-    private refreshWindow: Seconds = 3600
+    private refreshWindow: Seconds = 300
   ) {}
 
   async getIdentity() {
@@ -38,7 +38,7 @@ export default class JWTProvider implements IIdentityProvider<JWTCredentials> {
     return this.identity;
   }
 
-  async update(identity: string, credentials: object, store?: boolean) {
+  async update(identity: string, credentials: object, store = true) {
     this.identity = new Identity(identity, credentials as JWTCredentials);
     if (store) {
       this.store.store(this.serviceName, { identity, credentials });
