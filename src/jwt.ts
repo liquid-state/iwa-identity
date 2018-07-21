@@ -41,14 +41,14 @@ export default class JWTProvider implements IIdentityProvider<JWTCredentials> {
   async update(identity: string, credentials: object, store?: boolean) {
     this.identity = new Identity(identity, credentials as JWTCredentials);
     if (store) {
-      await this.store.store(this.serviceName, { identity, credentials });
+      this.store.store(this.serviceName, { identity, credentials });
     }
     return this.identity;
   }
 
   async clear() {
     this.identity = new Identity(null, null);
-    await this.store.store(this.serviceName, { identity: null, credentials: null });
+    this.store.store(this.serviceName, { identity: null, credentials: null });
   }
 
   private async getStoredIdentity() {

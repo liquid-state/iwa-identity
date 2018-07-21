@@ -6,7 +6,7 @@ export interface ISerialisableIdentity {
 }
 
 export interface IIdentityStore {
-  store(service: string, identity: ISerialisableIdentity): Promise<void>;
+  store(service: string, identity: ISerialisableIdentity): void;
   fetch(service: string): Promise<ISerialisableIdentity>;
 }
 
@@ -19,11 +19,11 @@ export default class IdentityStore implements IIdentityStore {
 
   constructor(private keyValueStore: KeyValueStore, private delegate: IIdentityStoreDelegate) {}
 
-  store(service: string, identity: ISerialisableIdentity): Promise<void> {
+  store(service: string, identity: ISerialisableIdentity): void {
     let keyName = `${this.BASE_KEY}.${service}`;
     let key = new Key(keyName, identity);
     this.delegate.setPermissionsForKey(key);
-    return this.keyValueStore.set(key);
+    this.keyValueStore.set(key);
   }
 
   async fetch(service: string): Promise<ISerialisableIdentity> {
