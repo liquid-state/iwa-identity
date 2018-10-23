@@ -62,7 +62,7 @@ export default class JWTProvider implements IIdentityProvider<JWTCredentials> {
       return;
     }
     const { identity, credentials } = await this.refreshCallback();
-    this.identity = new Identity(identity, credentials as JWTCredentials);
+    return this.update(identity, credentials);
   }
 
   private isExpired() {
