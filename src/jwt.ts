@@ -39,7 +39,7 @@ export default class JWTProvider implements IIdentityProvider<JWTCredentials> {
   }
 
   async update(identity: string, credentials: object, store = true) {
-    this.identity = new Identity(identity, credentials as JWTCredentials);
+    this.identity = this.intoIdentity(identity, credentials as JWTCredentials);
     if (store) {
       this.store.store(this.serviceName, { identity, credentials });
     }
@@ -53,7 +53,7 @@ export default class JWTProvider implements IIdentityProvider<JWTCredentials> {
 
   private async getStoredIdentity() {
     let { identity, credentials } = await this.store.fetch(this.serviceName);
-    return new Identity(identity, credentials as JWTCredentials);
+    return this.intoIdentity(identity, credentials as JWTCredentials);
   }
 
   private async refreshIdentity() {
@@ -78,5 +78,20 @@ export default class JWTProvider implements IIdentityProvider<JWTCredentials> {
     const parsed = JSON.parse(atob(payload));
     let expiredTime = Math.floor(Date.now() / 1000) + this.refreshWindow;
     return parsed.exp < expiredTime;
+  }
+
+  private intoIdentity(identityName: string | null, credentials: JWTCredentials | null) {
+    const ids = new Map<string, string>();
+    ids.set('sub', this.extractSub(credentials));
+    return new Identity(identityName, credentials, ids);
+  }
+
+  private extractSub(credentials: JWTCredentials | null) {
+    if (!credentials) {
+      return undefined;
+    }
+    const payload = credentials.jwt.split('.')[1];
+    const parsed = JSON.parse(atob(payload));
+    return parsed.sub;
   }
 }
