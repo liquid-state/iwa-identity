@@ -52,8 +52,12 @@ export default class JWTProvider implements IIdentityProvider<JWTCredentials> {
   }
 
   private async getStoredIdentity() {
-    let { identity, credentials } = await this.store.fetch(this.serviceName);
-    return this.intoIdentity(identity, credentials as JWTCredentials);
+    try {
+      const { identity, credentials } = await this.store.fetch(this.serviceName);
+      return this.intoIdentity(identity, credentials as JWTCredentials);
+    } catch (e) {
+      return this.intoIdentity(null, null);
+    }
   }
 
   private async refreshIdentity() {

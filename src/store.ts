@@ -32,7 +32,7 @@ export default class IdentityStore<T extends Value = ISerialisableIdentity>
     let keyName = `${this.BASE_KEY}.${service}`;
     let key = await this.keyValueStore.get(keyName);
     if (!key.value) {
-      throw '';
+      throw `Unable to locate stored credentials for ${service}`;
     }
     return key.decodeValue() as T;
   }
